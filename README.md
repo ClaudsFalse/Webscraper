@@ -1,12 +1,12 @@
 # Webscraper
-A web scraper command line application built in Go. 
-
+A web scraper command line application built in Go using Colly.
+Pass the url you want to scrape as the command argument in your run command.
 
 # Dependencies
 `Colly`
 
 # How to use
-Create an `.env` file locally and add a key called `URL` to store the url of the site you want to crawl. 
+Run `go run main/scraper.go <url you want to scrape> ` 
 
 <!-- TODO: add support for more than one url.  -->
 
