@@ -9,7 +9,7 @@ import (
 	"github.com/gocolly/colly"
 )
 
-type Dictionary map[string]interface{}
+type Dictionary map[string]string
 
 type RecipeSpecs struct {
 	difficulty, prepTime, cookingTime, servingSize, priceTier string
@@ -24,20 +24,20 @@ type Recipe struct {
 func main() {
 	args := os.Args
 	url := args[1]
-	c := colly.NewCollector()
+	collector := colly.NewCollector()
 	// initializing the slice of structs that will contain the scraped data
 	var recipes []Recipe
 
-	c.OnRequest(func(r *colly.Request) {
+	collector.OnRequest(func(r *colly.Request) {
 		fmt.Println("Visiting", r.URL)
 	})
-	c.OnResponse(func(r *colly.Response) {
+	collector.OnResponse(func(r *colly.Response) {
 		fmt.Println("Got a response from", r.Request.URL)
 	})
-	c.OnError(func(r *colly.Response, e error) {
+	collector.OnError(func(r *colly.Response, e error) {
 		fmt.Println("Blimey, an error occurred!:", e)
 	})
-	c.OnHTML("main", func(main *colly.HTMLElement) {
+	collector.OnHTML("main", func(main *colly.HTMLElement) {
 		recipe := Recipe{}
 		ingredients_dictionary := Dictionary{}
 		recipe.url = url
@@ -73,7 +73,7 @@ func main() {
 		recipes = append(recipes, recipe)
 	})
 
-	c.Visit(url)
+	collector.Visit(url)
 
 	fmt.Println(recipes)
 
